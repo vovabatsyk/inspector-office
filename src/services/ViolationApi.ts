@@ -35,10 +35,10 @@ export const violationApi = createApi({
       }),
       invalidatesTags: ['Violations'],
     }),
-    //     getContact: build.query<INotice, string>({
-    //       query: (id) => `notices/${id}`,
-    //       providesTags: ['Notice'],
-    //     }),
+    getViolation: build.query<IViolation, string>({
+      query: (id) => `violations/${id}`,
+      providesTags: ['Violation'],
+    }),
     //     editNotice: build.mutation({
     //       query: ({ id, ...body }) => ({
     //         url: `notices/${id}`,
@@ -53,4 +53,5 @@ export const violationApi = createApi({
 // export const {
 // } = violationApi
 
-export const { useGetViolationsQuery, useDeleteViolationMutation } = violationApi
+export const { useGetViolationsQuery, useDeleteViolationMutation, useGetViolationQuery } =
+  violationApi

@@ -2,13 +2,16 @@ import { Button, Card, Divider, List, message, Popconfirm, Row } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { IViolation } from '../models/IViolation'
 import { useDeleteViolationMutation, useGetViolationsQuery } from '../services/ViolationApi'
-import { DeleteOutlined, EditOutlined, FolderAddOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, FolderAddOutlined, EyeOutlined } from '@ant-design/icons'
 import { COLORS } from '../theme'
 import jwt from 'jwt-decode'
 import { useGetUserQuery, useGetUsersQuery } from '../services/UserApi'
+import { useNavigate } from 'react-router-dom'
+import { routes } from '../routes'
 
 export const HomePage = () => {
   const { data: violationsData, isLoading } = useGetViolationsQuery(500)
+  const navigate = useNavigate()
   const [violations, setViolations] = useState<IViolation[]>([])
   const userToken = localStorage.getItem('token')
   const decodedToken: any = jwt(userToken!)
@@ -70,10 +73,18 @@ export const HomePage = () => {
                 <Button
                   type='text'
                   style={{ color: COLORS.secondary }}
+                  icon={<EyeOutlined />}
+                  key='show'
+                  onClick={() => navigate(`${routes.VIOLATION_DETAIL}/${item.id}`)}
+                />,
+                <Button
+                  type='text'
+                  style={{ color: COLORS.secondary }}
                   icon={<EditOutlined />}
                   key='edit'
                   // onClick={() => navigate(`${routes.EDIT_NOTICE_PAGE}/${item.id}`)}
                 />,
+
                 <Popconfirm
                   title='Ви впевнені？'
                   okText='Так'

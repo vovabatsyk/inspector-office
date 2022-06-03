@@ -5,6 +5,7 @@ import { routes } from './routes'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
 import { NavBar } from './components/Navbar'
+import ViolationDetail from './pages/ViolationDetail'
 
 function App() {
   const navigate = useNavigate()
@@ -26,6 +27,7 @@ function App() {
             <>
               <Route path={routes.HOME_PAGE} element={<HomePage />} />
               <Route path='*' element={<Navigate to='/' replace />} />
+              <Route path={`${routes.VIOLATION_DETAIL}/:id`} element={<ViolationDetail />} />
             </>
           ) : (
             <>
