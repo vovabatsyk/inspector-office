@@ -16,10 +16,12 @@ export const LoginPage = () => {
   const onFinish = async (values: any) => {
     try {
       const token: any = await login({ email: values.email, password: values.password })
+      console.log(token)
+
       if (token.data.token) {
-        console.log('Success:', token.data.token.token)
         await localStorage.setItem('token', token.data.token.token)
       }
+
       navigate('../')
     } catch (error) {
       message.error('Не правельний email або пароль')

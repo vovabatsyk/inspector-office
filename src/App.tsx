@@ -4,6 +4,7 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import { routes } from './routes'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
+import { NavBar } from './components/Navbar'
 
 function App() {
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ function App() {
   return (
     <Layout>
       <Layout.Content>
+        {localToken && <NavBar />}
         <Routes>
           {localToken ? (
             <>
