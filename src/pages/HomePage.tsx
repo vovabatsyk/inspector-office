@@ -56,7 +56,7 @@ export const HomePage = () => {
           type='text'
           style={{ color: COLORS.success }}
           key='add'
-          // onClick={() => navigate(routes.ADD_NOTICE_PAGE)}
+          onClick={() => navigate(routes.ADD_VIOLATION)}
         >
           Додати
         </Button>
@@ -66,7 +66,7 @@ export const HomePage = () => {
           className='demo-loadmore-list'
           loading={isLoading}
           itemLayout='horizontal'
-          dataSource={violations}
+          dataSource={[...violations].reverse()}
           renderItem={(item) => (
             <List.Item
               actions={[

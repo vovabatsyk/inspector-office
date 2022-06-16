@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { URL } from '../constants/url'
 // import { IUser } from '../models/IUser'
 // import { IUserData } from '../models/IUserData'
 
@@ -6,7 +7,7 @@ export const userApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['Users', 'User'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/',
+    baseUrl: URL.DEFAULT,
     prepareHeaders: (headers, { getState }) => {
       const token = localStorage.getItem('token')
 
@@ -21,33 +22,10 @@ export const userApi = createApi({
       query: (limit = 150) => ({ url: 'api/users' }),
       providesTags: ['Users', 'User'],
     }),
-    // addUser: build.mutation({
-    //   query: (body: IUser) => ({
-    //     url: 'auth/registration',
-    //     method: 'POST',
-    //     body,
-    //   }),
-    //   invalidatesTags: ['Users'],
-    // }),
-    // deleteUser: build.mutation({
-    //   query: (id) => ({
-    //     url: `api/users/${id}`,
-    //     method: 'DELETE',
-    //   }),
-    //   invalidatesTags: ['Users'],
-    // }),
     getUser: build.query<any, string>({
       query: (id) => `api/users/${id}`,
       providesTags: ['Users'],
     }),
-    // updateUser: build.mutation({
-    //   query: ({ id, ...body }) => ({
-    //     url: `api/users/${id}`,
-    //     method: 'PUT',
-    //     body,
-    //   }),
-    //   invalidatesTags: ['User'],
-    // }),
   }),
 })
 

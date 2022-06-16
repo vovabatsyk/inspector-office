@@ -6,6 +6,7 @@ import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
 import { NavBar } from './components/Navbar'
 import ViolationDetail from './pages/ViolationDetail'
+import { AddViolation } from './pages/AddViolation'
 
 function App() {
   const navigate = useNavigate()
@@ -28,6 +29,7 @@ function App() {
               <Route path={routes.HOME_PAGE} element={<HomePage />} />
               <Route path='*' element={<Navigate to='/' replace />} />
               <Route path={`${routes.VIOLATION_DETAIL}/:id`} element={<ViolationDetail />} />
+              <Route path={routes.ADD_VIOLATION} element={<AddViolation />} />
             </>
           ) : (
             <>

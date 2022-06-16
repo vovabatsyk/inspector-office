@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { URL } from '../constants/url'
 import { IViolation } from '../models/IViolation'
+import { IViolationStory } from '../models/IViolationStory'
 
 export const violationApi = createApi({
   reducerPath: 'violationApi',
   tagTypes: ['Violations', 'Violation'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api/',
+    baseUrl: `${URL.DEFAULT}api/`,
     prepareHeaders: (headers, { getState }) => {
       const token = localStorage.getItem('token')
 
@@ -20,14 +22,14 @@ export const violationApi = createApi({
       query: (limit = 500) => ({ url: 'violations' }),
       providesTags: ['Violations', 'Violation'],
     }),
-    //     addNotice: build.mutation({
-    //       query: (body: INotice) => ({
-    //         url: 'notices',
-    //         method: 'POST',
-    //         body,
-    //       }),
-    //       invalidatesTags: ['Notices'],
-    //     }),
+    addViolation: build.mutation({
+      query: (body: IViolation) => ({
+        url: 'violations',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Violations'],
+    }),
     deleteViolation: build.mutation({
       query: (id) => ({
         url: `violations/${id}`,
@@ -39,19 +41,17 @@ export const violationApi = createApi({
       query: (id) => `violations/${id}`,
       providesTags: ['Violation'],
     }),
-    //     editNotice: build.mutation({
-    //       query: ({ id, ...body }) => ({
-    //         url: `notices/${id}`,
-    //         method: 'PUT',
-    //         body,
-    //       }),
-    //       invalidatesTags: ['Notice'],
-    //     }),
+    getViolationStories: build.query<IViolationStory[], number>({
+      query: (limit = 500) => ({ url: 'violation-story' }),
+      providesTags: ['Violations', 'Violation'],
+    }),
   }),
 })
 
-// export const {
-// } = violationApi
-
-export const { useGetViolationsQuery, useDeleteViolationMutation, useGetViolationQuery } =
-  violationApi
+export const {
+  useGetViolationsQuery,
+  useDeleteViolationMutation,
+  useGetViolationQuery,
+  useAddViolationMutation,
+  useGetViolationStoriesQuery,
+} = violationApi

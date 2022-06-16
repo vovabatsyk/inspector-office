@@ -2,8 +2,10 @@ import { Image, Row, Space, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { PageContainer } from '../components/PageContainer'
+import { URL } from '../constants/url'
 import { IViolation } from '../models/IViolation'
 import { useGetViolationQuery } from '../services/ViolationApi'
+import { useGetViolationImagesQuery } from '../services/ViolationImagesApi'
 import { SIZES } from '../theme'
 
 const { Text } = Typography
@@ -17,9 +19,9 @@ const ViolationDetail = () => {
     car_mark: '',
     car_model: '',
     car_number: '',
-    photos: '',
     userId: 0,
   })
+  const { data: images, isLoading } = useGetViolationImagesQuery(id!)
 
   useEffect(() => {
     try {
@@ -56,25 +58,15 @@ const ViolationDetail = () => {
         </Space>
         <Row justify='space-around' align='middle'>
           <Image.PreviewGroup>
-            {/* {violation.photos &&
-            violation.photos.map((photo: string, index) => (*/}
-            <Image
-              width={250}
-              style={{ margin: SIZES.margin }}
-              src='https://imageio.forbes.com/specials-images/imageserve/5d35eacaf1176b0008974b54/0x0.jpg?format=jpg&crop=4560,2565,x790,y784,safe&width=1200'
-            />
-            <Image
-              width={250}
-              style={{ margin: SIZES.margin }}
-              src='https://www.bugatti.com/fileadmin/_processed_/9/5/csm_HEADER_22de7ed3a8.jpg'
-            />
-            <Image
-              width={250}
-              style={{ margin: SIZES.margin }}
-              src='https://maserati.scene7.com/is/image/maserati/maserati/international/Models/my22/grecale/my22/modena/169/Maserati_Grecale_Modena_FULL_FRONT.jpg?$1920x2000$&fit=constrain'
-            />
-
-            {/* ))} */}
+            {images &&
+              images.map((photo, index) => (
+                <Image
+                  key={index}
+                  width={250}
+                  style={{ margin: SIZES.margin }}
+                  src={`${URL.DEFAULT}/${photo.image}`}
+                />
+              ))}
           </Image.PreviewGroup>
         </Row>
       </>

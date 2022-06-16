@@ -6,6 +6,6 @@ export interface IViolation {
   car_model: string
   car_number: string
   address: string
-  photos: string
   userId?: number
+  violationStoryId?: string
 }
