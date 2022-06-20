@@ -26,11 +26,11 @@ export const HomePage = () => {
     }
   }, [violationsData])
 
-  useEffect(() => {
-    if (userData) {
-      console.log(userData)
-    }
-  }, [userData])
+  // useEffect(() => {
+  //   if (userData) {
+  //     console.log(userData)
+  //   }
+  // }, [userData])
 
   const findUser = (id: number) => {
     const user: any = usersData?.find((u: any) => u.id === id)

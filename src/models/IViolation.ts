@@ -8,4 +8,5 @@ export interface IViolation {
   address: string
   userId?: number
   violationStoryId?: string
+  violationAdminId?: number
 }

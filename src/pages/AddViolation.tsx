@@ -2,20 +2,24 @@ import { Button, Form, Input, message, Upload, Select } from 'antd'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PageContainer } from '../components/PageContainer'
-import { useAddViolationMutation, useGetViolationStoriesQuery } from '../services/ViolationApi'
+import {
+  useAddViolationMutation,
+  useGetViolationStoriesQuery,
+  useGetViolationAdminQuery,
+} from '../services/ViolationApi'
 import { useAddViolationImagesMutation } from '../services/ViolationImagesApi'
 import { useGetUsersQuery } from '../services/UserApi'
 import { UploadOutlined } from '@ant-design/icons'
 import { SIZES } from '../theme'
-import { setFiles } from '@testing-library/user-event/dist/types/utils'
 import { IViolation } from '../models/IViolation'
 
 const { Option } = Select
 
 export const AddViolation = () => {
   const [addViolation] = useAddViolationMutation()
-  const [addImages] = useAddViolationImagesMutation()
+  const [addImages, { isLoading: isImagesLoading }] = useAddViolationImagesMutation()
   const { data: stories } = useGetViolationStoriesQuery(500)
+  const { data: violationAdmins } = useGetViolationAdminQuery(500)
   const { data: users, isLoading } = useGetUsersQuery(500)
   const navigate = useNavigate()
   const [images, setImages] = useState<any>([])
@@ -96,6 +100,17 @@ export const AddViolation = () => {
           </Select>
         </Form.Item>
 
+        <Form.Item label='КУпАП' name='violationAdminId'>
+          <Select style={{ width: '100%' }}>
+            {violationAdmins &&
+              violationAdmins.map((viol, idx) => (
+                <Option key={idx} value={viol.id}>
+                  {viol.name}
+                </Option>
+              ))}
+          </Select>
+        </Form.Item>
+
         <Upload name='logo' beforeUpload={(f) => setImages([...images, f])} action='' accept='.jpg'>
           <Button style={{ marginBottom: SIZES.margin }} icon={<UploadOutlined />}>
             Загрузити картинку
@@ -103,7 +118,7 @@ export const AddViolation = () => {
         </Upload>
 
         <Form.Item>
-          <Button type='primary' htmlType='submit'>
+          <Button type='primary' htmlType='submit' loading={isImagesLoading}>
             Зберегти
           </Button>
         </Form.Item>

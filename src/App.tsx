@@ -14,8 +14,6 @@ function App() {
 
   useEffect(() => {
     if (localToken) {
-      console.log('localToken', localToken)
-
       navigate('../')
     }
   }, [localToken])

@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { URL } from '../constants/url'
 import { IViolation } from '../models/IViolation'
 import { IViolationStory } from '../models/IViolationStory'
+import { IViolationAdmin } from '../models/IViolationAdmin'
 
 export const violationApi = createApi({
   reducerPath: 'violationApi',
@@ -45,6 +46,14 @@ export const violationApi = createApi({
       query: (limit = 500) => ({ url: 'violation-story' }),
       providesTags: ['Violations', 'Violation'],
     }),
+    getViolationAdmin: build.query<IViolationAdmin[], number>({
+      query: (limit = 500) => ({ url: 'violation-admin' }),
+      providesTags: ['Violations', 'Violation'],
+    }),
+    getViolationAdminById: build.query<IViolationAdmin, string>({
+      query: (id) => `violation-admin/${id}`,
+      providesTags: ['Violations'],
+    }),
   }),
 })
 
@@ -54,4 +63,6 @@ export const {
   useGetViolationQuery,
   useAddViolationMutation,
   useGetViolationStoriesQuery,
+  useGetViolationAdminQuery,
+  useGetViolationAdminByIdQuery,
 } = violationApi

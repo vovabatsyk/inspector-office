@@ -1,3 +1,3 @@
 export enum URL {
-  DEFAULT = 'http://dev.inspector.lviv.ua/',
+  DEFAULT = 'http://localhost:5000/',
 }
