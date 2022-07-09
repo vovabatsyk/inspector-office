@@ -3,6 +3,8 @@ import { URL } from '../constants/url'
 import { IViolation } from '../models/IViolation'
 import { IViolationStory } from '../models/IViolationStory'
 import { IViolationAdmin } from '../models/IViolationAdmin'
+import { IUnipImage } from '../models/IUnipImage'
+import { IUnipPayment } from '../models/IUnipPayment'
 
 export const violationApi = createApi({
   reducerPath: 'violationApi',
@@ -54,6 +56,13 @@ export const violationApi = createApi({
       query: (id) => `violation-admin/${id}`,
       providesTags: ['Violations'],
     }),
+    getViolationImagesUnip: build.query<IUnipImage[], number | string>({
+      query: (id) => `unip-images/${id}`,
+    }),
+
+    getViolationPaymentUnip: build.query<IUnipPayment, number>({
+      query: (id) => `violation-payments/${id}`,
+    }),
   }),
 })
 
@@ -65,4 +74,6 @@ export const {
   useGetViolationStoriesQuery,
   useGetViolationAdminQuery,
   useGetViolationAdminByIdQuery,
+  useGetViolationImagesUnipQuery,
+  useGetViolationPaymentUnipQuery,
 } = violationApi

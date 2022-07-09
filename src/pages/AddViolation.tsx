@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Upload, Select } from 'antd'
+import { Button, Form, Input, message, Upload, Select, DatePicker } from 'antd'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PageContainer } from '../components/PageContainer'
@@ -12,6 +12,9 @@ import { useGetUsersQuery } from '../services/UserApi'
 import { UploadOutlined } from '@ant-design/icons'
 import { SIZES } from '../theme'
 import { IViolation } from '../models/IViolation'
+import locale from 'antd/es/date-picker/locale/uk_UA'
+import moment from 'moment'
+import 'moment/locale/uk'
 
 const { Option } = Select
 
@@ -25,6 +28,8 @@ export const AddViolation = () => {
   const [images, setImages] = useState<any>([])
 
   const onFinish = async (values: any) => {
+    console.log(values)
+
     try {
       const violation: IViolation = await addViolation({
         ...values,
@@ -82,7 +87,7 @@ export const AddViolation = () => {
         </Form.Item>
 
         <Form.Item label='Дата і час' name='date'>
-          <Input />
+          <DatePicker style={{ width: '100%' }} showTime locale={locale} />
         </Form.Item>
 
         <Form.Item label='Адреса' name='address'>

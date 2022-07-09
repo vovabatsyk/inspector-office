@@ -3,4 +3,5 @@ export enum routes {
   LOGIN_PAGE = 'login',
   VIOLATION_DETAIL = 'violation-detail',
   ADD_VIOLATION = 'add-violation',
+  VIOLATIONS = 'violations',
 }

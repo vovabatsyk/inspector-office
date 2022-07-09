@@ -5,7 +5,12 @@ import { PageContainer } from '../components/PageContainer'
 import { URL } from '../constants/url'
 import { IViolation } from '../models/IViolation'
 import { IViolationAdmin } from '../models/IViolationAdmin'
-import { useGetViolationAdminQuery, useGetViolationQuery } from '../services/ViolationApi'
+import {
+  useGetViolationAdminQuery,
+  useGetViolationImagesUnipQuery,
+  useGetViolationPaymentUnipQuery,
+  useGetViolationQuery,
+} from '../services/ViolationApi'
 import { useGetViolationImagesQuery } from '../services/ViolationImagesApi'
 import { SIZES } from '../theme'
 
@@ -13,7 +18,9 @@ const { Text } = Typography
 const ViolationDetail = () => {
   const { id } = useParams()
   const { data } = useGetViolationQuery(id!)
+  const [unipId, setUnipId] = useState(0)
   const [violation, setViolation] = useState<IViolation>({
+    id: '',
     date: '',
     violation_number: '',
     address: '',
@@ -22,15 +29,20 @@ const ViolationDetail = () => {
     car_number: '',
     userId: 0,
     violationAdminId: 0,
+    unip_id: 0,
   })
   const [violationAdmin, setViolationAdmin] = useState<IViolationAdmin>()
   const { data: images, isLoading } = useGetViolationImagesQuery(id!)
+  const { data: unipImages, isLoading: isLoadingUnipImages } =
+    useGetViolationImagesUnipQuery(unipId)
+  const { data: unipPayment } = useGetViolationPaymentUnipQuery(unipId)
   const { data: violAdmins } = useGetViolationAdminQuery(200)
 
   useEffect(() => {
     try {
       if (data) {
         setViolation(data)
+        setUnipId(data.unip_id!)
       }
       if (violAdmins) {
         const viol = violAdmins.find((v) => v.id === data?.violationAdminId)
@@ -46,6 +58,8 @@ const ViolationDetail = () => {
       <>
         <Space direction='vertical'>
           <Text type='secondary'>
+            {' '}
+            {violation.unip_id}
             Номер повідомлення/постанови: <Text>ЛВ {violation.violation_number}</Text>
           </Text>
           <Text type='secondary'>
@@ -66,9 +80,23 @@ const ViolationDetail = () => {
           <Text type='secondary'>
             Адреса: <Text>м. Львів, {violation.address}</Text>
           </Text>
+          {unipPayment && (
+            <>
+              <Text type='secondary'>
+                До оплати: <Text>{unipPayment.FineAmount} грн.</Text>
+              </Text>
+              <Text type='secondary'>
+                Статус: <Text>{unipPayment.PaymentState}</Text>
+              </Text>
+              <Text type='secondary'>
+                Оплачено:{' '}
+                <Text>{unipPayment.PayedAmount === null ? '0' : unipPayment.PayedAmount} грн.</Text>
+              </Text>
+            </>
+          )}
         </Space>
         <Row justify='space-around' align='middle'>
-          {isLoading && <Skeleton active />}
+          {isLoading || (isLoadingUnipImages && <Skeleton active />)}
           <Image.PreviewGroup>
             {images &&
               images.map((photo, index) => (
@@ -77,6 +105,15 @@ const ViolationDetail = () => {
                   width={250}
                   style={{ margin: SIZES.margin }}
                   src={`${URL.DEFAULT}/${photo.image}`}
+                />
+              ))}
+            {unipImages &&
+              unipImages.map((photo, index) => (
+                <Image
+                  key={index}
+                  width={250}
+                  style={{ margin: SIZES.margin }}
+                  src={`data:image/png;base64, ${photo.PreviewBase64}`}
                 />
               ))}
           </Image.PreviewGroup>

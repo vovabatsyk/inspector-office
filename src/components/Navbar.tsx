@@ -1,12 +1,17 @@
 import { Menu, MenuProps, Layout } from 'antd'
-import { LogoutOutlined, PicLeftOutlined } from '@ant-design/icons'
+import { LogoutOutlined, PicLeftOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { routes } from '../routes'
 
 const menuItems: MenuProps['items'] = [
   {
-    label: 'Порушення',
+    label: 'Управління безпеки',
     key: 'home',
+    icon: <UnorderedListOutlined />,
+  },
+  {
+    label: 'Unip',
+    key: 'violations',
     icon: <PicLeftOutlined />,
   },
   {
@@ -29,6 +34,9 @@ export const NavBar = () => {
         break
       case 'home':
         navigate('/')
+        break
+      case 'violations':
+        navigate(routes.VIOLATIONS)
         break
 
       default:
